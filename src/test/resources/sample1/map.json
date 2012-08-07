@@ -1,0 +1,23 @@
+{
+    "Item Type" : "!camelCase",
+    "Subject" : "!camelCase",
+    "Grade" : "gradeLevel:Array",
+    "Title" : "!camelCase",
+    "Copyright Owner" : "!camelCase",
+    "Copyright Year" : "!camelCase",
+    "Material Type" : "!ignore",
+    "Contributor" : "!camelCase",
+    "Source URL" : "sourceUrl",
+    "License Type" : "!camelCase",
+    "Credentials" : "!camelCase",
+    "Reviews Passed" : "!camelCase:Array",
+    "Prior Use" : "!camelCase",
+    "STEM" : "!merge->itemData",
+    "A" : "!merge->itemData",
+    "B" : "!merge->itemData",
+    "C" : "!merge->itemData",
+    "D" : "!merge->itemData",
+    "Key" : "!merge->itemData",
+    "itemData" : "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<assessmentItem xmlns=\"http://www.imsglobal.org/xsd/imsqti_v2p1\"\n                xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n                xsi:schemaLocation=\"http://www.imsglobal.org/xsd/imsqti_v2p1 http://www.imsglobal.org/xsd/imsqti_v2p1.xsd\"\n                title=\"\" adaptive=\"false\" timeDependent=\"false\">\n    <responseDeclaration identifier=\"RESPONSE\" cardinality=\"multiple\" baseType=\"identifier\">\n        <correctResponse>\n            <value>${Key}</value>\n        </correctResponse>\n    </responseDeclaration>\n    <outcomeDeclaration identifier=\"SCORE\" cardinality=\"single\" baseType=\"float\"/>\n    <itemBody>\n        <choiceInteraction responseIdentifier=\"RESPONSE\" shuffle=\"true\" maxChoices=\"0\">\n            <prompt>${STEM}</prompt>\n            <simpleChoice identifier=\"A\" fixed=\"false\">${A}</simpleChoice>\n            <simpleChoice identifier=\"B\" fixed=\"false\">${B}</simpleChoice>\n            <simpleChoice identifier=\"C\" fixed=\"false\">${C}</simpleChoice>\n            <simpleChoice identifier=\"D\" fixed=\"false\">${D}</simpleChoice>\n        </choiceInteraction>\n    </itemBody>\n</assessmentItem>\n"
+
+}
