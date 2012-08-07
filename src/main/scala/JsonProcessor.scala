@@ -7,6 +7,9 @@ import java.io.{FileWriter, File}
 
 object JsonProcessor {
 
+
+  val MergeMatch = "!merge->(.*)".r
+
   def process(input: String, map: String, output: String) {
     println(input)
     println(map)
@@ -46,55 +49,51 @@ object JsonProcessor {
       var unprocessedItems = collection.mutable.Map(item.toSeq: _*)
       val mergeProcessor = new MergeProcessor()
 
-      mapObject.foreach((kv: (String, String) ) => {
+      mapObject.foreach((kv: (String, String)) => {
 
         val mapKey = kv._1
         val mapInstruction = kv._2
         val itemValue = item.get(mapKey)
 
-        itemValue match {
-          case Some(foundValue) => {
+        if (mapKey.startsWith("!insert")) {
+          val key = mapKey.replace("!insert:", "")
+          output += (key -> mapInstruction)
+        } else {
 
-            if ( isMerge(mapInstruction)){
-              println("isMerge")
-              val MergeMatch = "!merge->(.*)".r
-              val MergeMatch(mergeName) = mapInstruction
-              val maybeTemplate: Option[String] = mapObject.get(mergeName)
+          itemValue match {
+            case Some(foundValue) => {
 
-              maybeTemplate match {
-                case Some(template) => {
-                  mergeProcessor.createMergeIfNeeded(mergeName, template)
-                  mergeProcessor.addSubstitutionToMerge(mergeName, mapKey, foundValue.asInstanceOf[String])
+              if (isMerge(mapInstruction)) {
+                val MergeMatch(mergeName) = mapInstruction
+                val success: Boolean = processMerge(mergeName, mapObject.get(mergeName), mergeProcessor, mapKey, foundValue)
+                if (success) {
                   unprocessedItems -= mapKey
                 }
-                case _ => throw new RuntimeException("No merge template declared for: " + mergeName)
-              }
-            }
-            else
-            {
-              val processor = ProcessorLookup.lookup(mapInstruction)
-              if ( processor != null ){
-                unprocessedItems -= mapKey
+              } else {
+                val processor = ProcessorLookup.lookup(mapInstruction)
+                if (processor != null) {
+                  unprocessedItems -= mapKey
 
-                val result: Option[(String, Any)] = processor.process(mapKey,foundValue.asInstanceOf[String])
-                result match {
-                  case Some(processed) => {
-                    output += processed._1 -> processed._2
+                  val result: Option[(String, Any)] = processor.process(mapKey, foundValue.asInstanceOf[String])
+                  result match {
+                    case Some(processed) => {
+                      output += processed._1 -> processed._2
+                    }
+                    case None => //do nothing
                   }
-                  case None => //do nothing
                 }
               }
             }
+            case None => //do-nothing
           }
-          case None => //do-nothing
         }
       })
       //copy over any unprocessed items
       unprocessedItems.foreach((kv) => output += (kv._1 -> kv._2))
 
-      val merges : List[(String,String)] = mergeProcessor.processMerges()
+      val merges: List[(String, String)] = mergeProcessor.processMerges()
 
-      merges.foreach( (t:(String,String)) => {
+      merges.foreach((t: (String, String)) => {
         output += (t._1 -> t._2)
       })
 
@@ -103,5 +102,18 @@ object JsonProcessor {
     generate(processedList)
   }
 
-  def isMerge(instruction:String) : Boolean = instruction != null && instruction.contains("!merge")
+
+  private def processMerge(mergeName: String, template: Option[String], processor: MergeProcessor, mapKey: String, foundValue: Any): Boolean = {
+
+    template match {
+      case Some(foundTemplate) => {
+        processor.createMergeIfNeeded(mergeName, foundTemplate)
+        processor.addSubstitutionToMerge(mergeName, mapKey, foundValue.asInstanceOf[String])
+        true
+      }
+      case _ => throw new RuntimeException("No merge template declared for: " + mergeName)
+    }
+  }
+
+  def isMerge(instruction: String): Boolean = instruction != null && instruction.contains("!merge")
 }

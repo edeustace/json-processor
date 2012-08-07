@@ -93,7 +93,7 @@ class JsonProcessorSpec extends Specification {
       JsonProcessor.process(input, map) must equalTo("""[{"mergeOut":"template:I'm a key!"}]""")
     }
 
-    "works with sample1 json" in {
+    "work with sample1 json" in {
 
       val input = Source.fromFile("src/test/resources/sample1/input.json").mkString
       val map = Source.fromFile("src/test/resources/sample1/map.json").mkString
@@ -104,5 +104,19 @@ class JsonProcessorSpec extends Specification {
       println("..")
       true must be equalTo(true)
     }
+
+    "allow inserts from map" in {
+      val input = """[{"name":"Ed"}]"""
+      val map = """{"name":"firstName", "!insert:defaultValue": "hello"}"""
+      JsonProcessor.process(input, map) must equalTo("""[{"firstName":"Ed","defaultValue":"hello"}]""")
+    }
+
+    /*"allow inserts of full objects from map" in {
+
+      val input = """[{"name":"Ed"}]"""
+      val map = """{"name":"firstName", "!insert:object": {"msg":"hello"}}"""
+      JsonProcessor.process(input, map) must equalTo("""[{"firstName":"Ed","object":{"msg":"hello"}}]""")
+
+    } */
   }
 }
