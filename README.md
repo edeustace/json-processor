@@ -2,22 +2,25 @@
 This library is a utility to allow you to map from one flavour of json to another.
 
 eg if you have: 
-   [
-    { 
-      "fruit" : "Apple" 
-    }
-   ]
+
+    [
+      { 
+        "fruit" : "Apple" 
+      }
+    ]
 
 You can declare a map like so:
-   {
-    "fruit" : "favouriteFruits"
-   }
+
+    {
+      "fruit" : "favouriteFruits"
+    }
 
 Running this will generate: 
+
     [
-    {
-      "favouriteFruits" : "Apple"
-    }
+     {
+       "favouriteFruits" : "Apple"
+     }
     ]
 
 ### Options and commands
