@@ -25,9 +25,42 @@ Running this will generate:
 
 ### Options and commands
 
-- !ignore
-- !camelCase
-- !merge->
+####!ignore
+
+suppresses that item from the output
+
+#### !camelCase 
+
+convert the existing key to camelCase eg: “First Name” to “firstName”
+
+#### !merge-> 
+
+merge a couple of the keys into one keyed value. With merge you have to specify a new key name and also provide a template for that new key. So if you add “!merge->newKey”, “newKey” will be the name of the new keyed item, which will use a template called “newKey” that adds the other items into it.
+
+
+The input:
+
+    [{
+        "A Key" : "I'm a key"
+    }]
+
+The map: 
+
+    {
+        "A Key" : "!merge->mergeOut", 
+        "mergeOut": "template:${A Key}!" 
+    }
+
+The output:
+
+     [{
+        "mergeOut":"template:I'm a key!"
+    }]
+
+#### !insert
+
+insert key/value into output.
+
 
 
 ## Running
