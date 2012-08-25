@@ -29,9 +29,13 @@ Running this will generate:
 
 suppresses that item from the output
 
+Eg: `[{"name":"Ed", "number" : 1234 }]` + `{"number":"!ignore"}` = `[{"name":"Ed"}]`
+
 #### !camelCase 
 
 convert the existing key to camelCase eg: “First Name” to “firstName”
+
+Eg: `[{"First Name":"Ed"}]` + `{"First Name":"!camelCase"}` = `[{"firstName":"Ed"}]`
 
 #### !merge-> 
 
