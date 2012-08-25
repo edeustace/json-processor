@@ -33,7 +33,7 @@ Eg: `[{"name":"Ed", "number" : 1234 }]` + `{"number":"!ignore"}` = `[{"name":"Ed
 
 #### !camelCase 
 
-convert the existing key to camelCase eg: “First Name” to “firstName”
+convert the existing key to camelCase
 
 Eg: `[{"First Name":"Ed"}]` + `{"First Name":"!camelCase"}` = `[{"firstName":"Ed"}]`
 
