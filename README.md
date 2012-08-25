@@ -41,20 +41,22 @@ merge a couple of the keys into one keyed value. With merge you have to specify 
 The input:
 
     [{
-        "A Key" : "I'm a key"
+        "firstName" : "Ed",
+        "lastName" : "Eustace"
     }]
 
 The map: 
 
     {
-        "A Key" : "!merge->mergeOut", 
-        "mergeOut": "template:${A Key}!" 
+        "firstName" : "!merge->fullName", 
+        "lastName" : "!merge->fullName", 
+        "fullname": "${firstName} ${lastName}!" 
     }
 
 The output:
 
      [{
-        "mergeOut":"template:I'm a key!"
+        "fullName":"Ed Eustace"
     }]
 
 #### !insert
