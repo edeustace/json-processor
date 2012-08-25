@@ -50,7 +50,7 @@ The map:
     {
         "firstName" : "!merge->fullName", 
         "lastName" : "!merge->fullName", 
-        "fullname": "${firstName} ${lastName}!" 
+        "fullname": "${firstName} ${lastName}" 
     }
 
 The output:
