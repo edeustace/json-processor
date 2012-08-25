@@ -67,6 +67,8 @@ The output:
 
 insert key/value into output.
 
+Eg: `[{"name":"Ed" }]` + `{"!insert:type":"human"}` = `[{"name":"Ed", "type":"human"}]`
+
 
 
 ## Running
